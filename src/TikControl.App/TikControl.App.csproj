@@ -17,7 +17,7 @@
     <UseWPF>true</UseWPF>
     <AssemblyName>TikControlCaosbloxer</AssemblyName>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>sigato</Authors>
     <Product>TikControl Caosbloxer</Product>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
