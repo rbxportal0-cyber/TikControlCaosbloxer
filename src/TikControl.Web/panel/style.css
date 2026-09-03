@@ -1,0 +1,137 @@
+:root {
+  --bg: #0b0b12;
+  --panel: #15151f;
+  --border: #262633;
+  --text: #e7e7f0;
+  --dim: #9a9ab0;
+  --brand: #7c3aed;
+  --brand2: #22d3ee;
+  --green: #4ade80;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+/* ── Barra superior ─────────────────────────────── */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 22px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand { display: flex; align-items: center; gap: 10px; }
+.logo {
+  width: 26px; height: 26px; border-radius: 7px;
+  background: linear-gradient(135deg, var(--brand), var(--brand2));
+}
+.brand-name { font-weight: 600; font-size: 15px; }
+.brand-name b { color: var(--brand2); }
+
+.live-status {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.04em;
+  color: var(--green);
+  display: flex; align-items: center; gap: 6px;
+}
+.live-status .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--green); box-shadow: 0 0 8px var(--green);
+  animation: pulse 1.4s infinite;
+}
+@keyframes pulse { 50% { opacity: 0.4; } }
+
+/* ── Layout ─────────────────────────────────────── */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 18px;
+  padding: 18px 22px;
+}
+
+/* ── Estadísticas ───────────────────────────────── */
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.stat {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+}
+.stat-label { font-size: 12px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.05em; }
+.stat-value { display: block; font-size: 30px; font-weight: 800; margin-top: 6px; }
+
+/* ── Feed de eventos ────────────────────────────── */
+.feed h2 { font-size: 14px; color: var(--dim); margin: 6px 0 12px; }
+.event-list { list-style: none; }
+.event-item {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--brand);
+  border-radius: 10px;
+  padding: 11px 14px;
+  margin-bottom: 8px;
+  animation: slide 0.25s ease;
+}
+.event-item.gift { border-left-color: #f59e0b; }
+.event-item.follow { border-left-color: var(--green); }
+.event-item.comment { border-left-color: var(--brand2); }
+.event-emoji { font-size: 20px; }
+.event-user { font-weight: 700; }
+.event-label { color: var(--dim); font-size: 13px; }
+.event-kind { margin-left: auto; font-size: 10px; color: var(--dim); letter-spacing: 0.04em; }
+@keyframes slide { from { opacity: 0; transform: translateY(-6px); } }
+
+/* ── Controles laterales ────────────────────────── */
+.controls {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  align-self: start;
+}
+.controls h3 { font-size: 13px; color: var(--dim); margin-bottom: 14px; }
+.switch-line { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+
+#btnClear {
+  width: 100%; margin-top: 8px;
+  background: #1f1f2e; color: var(--text);
+  border: 1px solid var(--border); border-radius: 9px;
+  padding: 10px; cursor: pointer; font-weight: 600;
+}
+#btnClear:hover { border-color: var(--brand); }
+
+/* ── Overlay en pantalla (base) ──────────────────── */
+.overlay-pop {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translate(-50%, 60px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(11, 11, 18, 0.9);
+  border: 1px solid var(--brand);
+  border-radius: 14px;
+  padding: 14px 22px;
+  min-width: 320px;
+  opacity: 0;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 24px rgba(124, 58, 237, 0.35);
+  z-index: 999;
+  pointer-events: none;
+}
+.overlay-pop.show { opacity: 1; transform: translate(-50%, 0); }
+.overlay-pop.gift { border-color: #f59e0b; }
+.overlay-pop.follow { border-color: var(--green); }
+.overlay-pop.comment { border-color: var(--brand2); }
+.overlay-emoji { font-size: 30px; }
+.overlay-user { font-size: 17px; font-weight: 800; }
+.overlay-label { font-size: 14px; color: var(--dim); }

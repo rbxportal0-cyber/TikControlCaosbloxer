@@ -1,0 +1,26 @@
+{
+    "name": "TikTokLiveSharp",
+    "rootNamespace": "",
+    "references": [
+        "GUID:976dc59707429134282c9b8ff4eeac50",
+        "GUID:546d67506df61e64abfd745731a9acff"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "protobuf-net.dll",
+        "Newtonsoft.Json.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "Unity",
+            "expression": "0.0.0",
+            "define": "UNITY"
+        }
+    ],
+    "noEngineReferences": false
+}

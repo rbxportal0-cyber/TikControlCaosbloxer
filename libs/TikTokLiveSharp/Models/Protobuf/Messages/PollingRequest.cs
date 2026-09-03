@@ -1,0 +1,171 @@
+using ProtoBuf;
+using System.ComponentModel;
+
+namespace TikTokLiveSharp.Models.Protobuf.Messages
+{
+    [ProtoContract]
+    public partial class PollingRequest : AProtoBase
+    {
+        [ProtoMember(1)]
+        public long LiveId { get; }
+
+        [ProtoMember(2)]
+        public long AId { get; }
+
+        [ProtoMember(3)]
+        [DefaultValue("")]
+        public string RoomId { get; } = string.Empty;
+
+        [ProtoMember(4)]
+        [DefaultValue("")]
+        public string Identity { get; } = string.Empty;
+
+        [ProtoMember(5)] 
+        [DefaultValue("")] 
+        public string LastRtt { get; } = string.Empty;
+
+        [ProtoMember(6)]
+        [DefaultValue("")]
+        public string InternalExt { get; } = string.Empty;
+
+        [ProtoMember(7)]
+        [DefaultValue("")]
+        public string Cursor { get; } = string.Empty;
+
+        [ProtoMember(8)]
+        [DefaultValue("")]
+        public string DeviceId { get; } = string.Empty;
+
+        [ProtoMember(9)]
+        [DefaultValue("")]
+        public string UniqueId { get; } = string.Empty;
+
+        [ProtoMember(10)]
+        [DefaultValue("")]
+        public string DevicePlatform { get; } = string.Empty;
+
+        [ProtoMember(11)]
+        [DefaultValue("")]
+        public string AppLanguage { get; } = string.Empty;
+
+        [ProtoMember(12)]
+        [DefaultValue("")]
+        public string VersionCode { get; } = string.Empty;
+
+        [ProtoMember(13)]
+        [DefaultValue("")]
+        public string UpdateVersionCode { get; } = string.Empty;
+
+        [ProtoMember(14)]
+        [DefaultValue("")]
+        public string RespContentType { get; } = string.Empty;
+
+        [ProtoMember(15)]
+        [DefaultValue("")]
+        public string GetHistory { get; } = string.Empty;
+
+        [ProtoMember(16)]
+        [DefaultValue("")]
+        public string Ac { get; } = string.Empty;
+
+        [ProtoMember(17)]
+        [DefaultValue("")]
+        public string KeepMethod { get; } = string.Empty;
+
+        [ProtoMember(18)]
+        [DefaultValue("")]
+        public string Stress { get; } = string.Empty;
+
+        [ProtoMember(19)]
+        public long RecvCnt { get; }
+
+        [ProtoMember(20)]
+        public long ParseCnt { get; }
+        
+        [ProtoMember(21)]
+        [DefaultValue("")]
+        public string FetchRule { get; } = string.Empty;
+
+        [ProtoMember(22)]
+        [DefaultValue("")]
+        public string AbGroup { get; } = string.Empty;
+
+        [ProtoMember(23)]
+        public long DidRule { get; }
+
+        [ProtoMember(24)]
+        public bool Debug { get; }
+
+        [ProtoMember(25)]
+        [DefaultValue("")]
+        public string LiveRegion { get; } = string.Empty;
+
+        [ProtoMember(26)]
+        [DefaultValue("")]
+        public string RoomTag { get; } = string.Empty;
+
+        [ProtoMember(27)]
+        [DefaultValue("")]
+        public string UserId { get; } = string.Empty;
+
+        [ProtoMember(28)]
+        [DefaultValue("")]
+        public string ForceHttps { get; } = string.Empty;
+
+        [ProtoMember(29)]
+        [DefaultValue("")]
+        public string AccountType { get; } = string.Empty;
+
+        [ProtoMember(30)]
+        [DefaultValue("")]
+        public string SimOper { get; } = string.Empty;
+
+        [ProtoMember(31)]
+        [DefaultValue("")]
+        public string SimRegion { get; } = string.Empty;
+
+        [ProtoMember(32)]
+        [DefaultValue("")]
+        public string UILanguage { get; } = string.Empty;
+
+        [ProtoMember(33)]
+        [DefaultValue("")]
+        public string Youtube { get; } = string.Empty;
+
+        [ProtoMember(34)]
+        [DefaultValue("")]
+        public string Gender { get; } = string.Empty;
+
+        [ProtoMember(35)]
+        [DefaultValue("")]
+        public string HevcSupported { get; } = string.Empty;
+
+        [ProtoMember(36)]
+        [DefaultValue("")]
+        public string AppVersionMinor { get; } = string.Empty;
+
+        [ProtoMember(37)]
+        [DefaultValue("")]
+        public string Brand { get; } = string.Empty;
+
+        [ProtoMember(38)]
+        [DefaultValue("")]
+        public string AppId { get; } = string.Empty;
+
+        [ProtoMember(39)]
+        [DefaultValue("")]
+        public string Gaid { get; } = string.Empty;
+
+        [ProtoMember(40)]
+        [DefaultValue("")]
+        public string OriginalChannel { get; } = string.Empty;
+
+        [ProtoMember(41)]
+        [DefaultValue("")]
+        public string Logo { get; } = string.Empty;
+
+        [ProtoMember(42)]
+        [DefaultValue("")]
+        public string ReleaseBuild { get; } = string.Empty;
+    }
+}

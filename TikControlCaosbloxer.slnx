@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/TikControl.App/TikControl.App.csproj" />
+    <Project Path="src/TikControl.Core/TikControl.Core.csproj" />
+  </Folder>
+</Solution>

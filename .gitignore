@@ -1,0 +1,22 @@
+# .NET build artifacts
+bin/
+obj/
+publish/
+**/bin/
+**/obj/
+
+# Visual Studio
+.vs/
+*.user
+
+# Misc
+*.pdb
+*.userprefs
+Thumbs.db
+Desktop.ini
+
+# Carpetas de distribución generadas por CI
+gh-pages-content/
+dist-gh-pages/
+_pages/
+dist/

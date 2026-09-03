@@ -1,0 +1,137 @@
+name: Auto Compiler
+
+# Se activa en CADA push a 'main'
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: auto-compiler
+  cancel-in-progress: false
+
+jobs:
+  build-and-publish:
+    name: Build .exe + update.json
+    runs-on: windows-latest
+    timeout-minutes: 30
+
+    steps:
+      # 1) Descargar el código
+      - name: Checkout del código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0            # historia completa (necesario para git describe / versionado)
+          persist-credentials: true
+
+      # 2) Configurar .NET SDK (compatible con net10.0-windows)
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      # 3) Incrementar versión automática (lee VERSION.txt y sube el último dígito)
+      #    Ej: 1.0.1 -> 1.0.2
+      #    Se commitea y empuja el nuevo VERSION.txt + csproj a 'main' para que la
+      #    versión se acumule en cada push (1.0.0 -> 1.0.1 -> 1.0.2 ...).
+      - name: Incrementar versión
+        id: ver
+        shell: pwsh
+        run: |
+          $file = 'VERSION.txt'
+          if (-not (Test-Path $file)) { Set-Content -Path $file -Value '1.0.0' }
+          $v = (Get-Content $file).Trim()
+          $parts = @($v.Split('.') | ForEach-Object { [int]$_ })
+          while ($parts.Count -lt 3) { $parts += 0 }
+          $parts[2] = $parts[2] + 1                      # incrementa el último: 1.0.1 -> 1.0.2
+          $new = ($parts -join '.')
+          Set-Content -Path $file -Value $new -NoNewline
+          write-output "new=$new"
+          # Escribir también en el csproj para que el ensamblado use la versión
+          $csproj = 'src\TikControl.App\TikControl.App.csproj'
+          $xml = [xml](Get-Content $csproj)
+          $xml.Project.PropertyGroup.Version = $new
+          $xml.Save($csproj)
+
+          # Commit + push del incremento de versión de vuelta a 'main'
+          git add VERSION.txt src/TikControl.App/TikControl.App.csproj
+          git -c user.name="github-actions[bot]" -c user.email="github-actions[bot]@users.noreply.github.com" commit -m "Bump version to v$new [skip ci]" 2>$null
+          git push origin main 2>$null
+
+      # 4) Compilar + publicar EXE portátil (single-file, framework-dependent)
+      - name: Publicar EXE
+        shell: pwsh
+        run: |
+          dotnet publish src\TikControl.App\TikControl.App.csproj `
+            -c Release `
+            -r win-x64 `
+            --self-contained false `
+            -p:PublishSingleFile=true `
+            -p:IncludeNativeLibrariesForSelfExtract=true `
+            -p:PublishTrimmed=false `
+            -o publish
+
+      # 5) Preparar update.json con versión y URL de descarga directa
+      - name: Generar update.json
+        id: meta
+        shell: pwsh
+        run: |
+          $ver = (Get-Content 'VERSION.txt').Trim()
+          $repo = "${{ github.repository }}"
+          $branch = "gh-pages"
+          # URL directa del exe y del propio update.json en la rama de distribución
+          $exeUrl = "https://raw.githubusercontent.com/$repo/$branch/TikControlCaosbloxer.exe"
+          $json = [ordered]@{
+            version = $ver
+            notes   = "Actualización automática v$ver"
+            url     = $exeUrl
+            sha256  = (Get-FileHash "publish\TikControlCaosbloxer.exe" -Algorithm SHA256).Hash.ToLower()
+            date    = (Get-Date -Format 'yyyy-MM-ddTHH:mm:ssZ')
+          }
+          $json | ConvertTo-Json -Depth 4 | Set-Content 'publish\update.json' -Encoding UTF8
+          write-output "version=$ver"
+
+      # 6) Publicar a la rama 'gh-pages' (rama de distribución pública)
+      #    Siempre deja:
+      #      - TikControlCaosbloxer.exe  (ejecutable)
+      #      - update.json               (versión + URL de descarga directa)
+      #      - web/                      (interfaz, necesaria junto al exe)
+      #      - VERSION.txt
+      - name: Deploy a rama de distribución (gh-pages)
+        shell: pwsh
+        run: |
+          # 1) Preparar el contenido que vivirá en la rama gh-pages
+          $contentDir = "$env:RUNNER_TEMP\gh-pages-content"
+          Remove-Item -Recurse -Force -ErrorAction SilentlyContinue $contentDir
+          New-Item -ItemType Directory -Force -Path $contentDir | Out-Null
+
+          Copy-Item 'publish\TikControlCaosbloxer.exe' -Destination $contentDir -Force
+          Copy-Item 'publish\update.json' -Destination $contentDir -Force
+          Copy-Item -Recurse -Force 'publish\web' -Destination "$contentDir\web"
+          Copy-Item 'VERSION.txt' -Destination $contentDir -Force
+
+          # 2) Configurar git
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # 3) Crear un repo temporal de la rama gh-pages desde cero
+          $tmpRepo = "$env:RUNNER_TEMP\gh-pages-repo"
+          Remove-Item -Recurse -Force -ErrorAction SilentlyContinue $tmpRepo
+          New-Item -ItemType Directory -Force -Path $tmpRepo | Out-Null
+          git init $tmpRepo
+          cd $tmpRepo
+
+          # Copiar todo el contenido (exe + update.json + web + VERSION.txt)
+          Copy-Item -Recurse -Force "$contentDir\*" -Destination $tmpRepo
+
+          git add -A
+          git -c user.name="github-actions[bot]" -c user.email="github-actions[bot]@users.noreply.github.com" commit -m "Auto-build v${{ steps.ver.outputs.new }}"
+
+          # 4) Push forzado del contenido a la rama gh-pages del repo real
+          $remote = "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
+          git push --force "$remote" HEAD:gh-pages
+          cd "$GITHUB_WORKSPACE"
+
+

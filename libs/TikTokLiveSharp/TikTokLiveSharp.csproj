@@ -1,0 +1,230 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>1.2.1</Version>
+    <Authors>Frank van Hoof</Authors>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/frankvHoof93/TikTokLiveSharp</PackageProjectUrl>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageTags>TikTok;Live</PackageTags>
+    <Description>Port of TikTokLive client for C#</Description>
+    <Company>Frank van Hoof</Company>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIconUrl />
+    <Copyright>2024 Frank van Hoof</Copyright>
+    <RepositoryUrl>https://github.com/frankvHoof93/TikTokLiveSharp</RepositoryUrl>
+    <RepositoryType>Library</RepositoryType>
+    <PackageId>TikTokLive_Sharp</PackageId>
+    <PackageReleaseNotes />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Client.meta" />
+    <None Remove="Client\ClientSettings.cs.meta" />
+    <None Remove="Client\Constants.cs.meta" />
+    <None Remove="Client\HTTP.meta" />
+    <None Remove="Client\HTTP\ITikTokHttpRequest.cs.meta" />
+    <None Remove="Client\HTTP\TikTokCookieJar.cs.meta" />
+    <None Remove="Client\HTTP\TikTokHTTPClient.cs.meta" />
+    <None Remove="Client\HTTP\TikTokHttpRequest.cs.meta" />
+    <None Remove="Client\Proxy.meta" />
+    <None Remove="Client\Proxy\RotatingProxy.cs.meta" />
+    <None Remove="Client\Proxy\RotationSettings.cs.meta" />
+    <None Remove="Client\Socket.meta" />
+    <None Remove="Client\Socket\ITikTokWebSocket.cs.meta" />
+    <None Remove="Client\Socket\TikTokWebSocket.cs.meta" />
+    <None Remove="Client\Socket\TikTokWebSocketResponse.cs.meta" />
+    <None Remove="Client\TikTokBaseClient.cs.meta" />
+    <None Remove="Client\TikTokLiveClient.cs.meta" />
+    <None Remove="Debugging.meta" />
+    <None Remove="Debugging\Debug.cs.meta" />
+    <None Remove="Errors.meta" />
+    <None Remove="Errors\Connections.meta" />
+    <None Remove="Errors\Connections\AConnectionException.cs.meta" />
+    <None Remove="Errors\Connections\AlreadyConnectedException.cs.meta" />
+    <None Remove="Errors\Connections\AlreadyConnectingException.cs.meta" />
+    <None Remove="Errors\Connections\FailedConnectionException.cs.meta" />
+    <None Remove="Errors\Connections\LiveNotFoundException.cs.meta" />
+    <None Remove="Errors\FetchError.meta" />
+    <None Remove="Errors\FetchError\AFetchException.cs.meta" />
+    <None Remove="Errors\FetchError\FailedFetchGiftsException.cs.meta" />
+    <None Remove="Errors\FetchError\FailedFetchRoomInfoException.cs.meta" />
+    <None Remove="Errors\Messaging.meta" />
+    <None Remove="Errors\Messaging\UserCallbackException.cs.meta" />
+    <None Remove="Errors\Messaging\WebcastMessageException.cs.meta" />
+    <None Remove="Errors\Permissions.meta" />
+    <None Remove="Errors\Permissions\InsufficientPermissionException.cs.meta" />
+    <None Remove="Events.meta" />
+    <None Remove="Events\Messages.meta" />
+    <None Remove="Events\Messages\AMessageData.cs.meta" />
+    <None Remove="Events\Messages\BarrageMessage.cs.meta" />
+    <None Remove="Events\Messages\Caption.cs.meta" />
+    <None Remove="Events\Messages\Comment.cs.meta" />
+    <None Remove="Events\Messages\DetectMessage.cs.meta" />
+    <None Remove="Events\Messages\Emote.cs.meta" />
+    <None Remove="Events\Messages\Envelope.cs.meta" />
+    <None Remove="Events\Messages\Follow.cs.meta" />
+    <None Remove="Events\Messages\GiftBroadcast.cs.meta" />
+    <None Remove="Events\Messages\GiftMessage.cs.meta" />
+    <None Remove="Events\Messages\GoalUpdate.cs.meta" />
+    <None Remove="Events\Messages\IMDelete.cs.meta" />
+    <None Remove="Events\Messages\InRoomBanner.cs.meta" />
+    <None Remove="Events\Messages\Join.cs.meta" />
+    <None Remove="Events\Messages\Like.cs.meta" />
+    <None Remove="Events\Messages\LinkLayerMessage.cs.meta" />
+    <None Remove="Events\Messages\LinkMessage.cs.meta" />
+    <None Remove="Events\Messages\LinkMicArmies.cs.meta" />
+    <None Remove="Events\Messages\LinkMicBattle.cs.meta" />
+    <None Remove="Events\Messages\LinkMicFanTicket.cs.meta" />
+    <None Remove="Events\Messages\LinkMicMethod.cs.meta" />
+    <None Remove="Events\Messages\PollMessage.cs.meta" />
+    <None Remove="Events\Messages\Question.cs.meta" />
+    <None Remove="Events\Messages\RankText.cs.meta" />
+    <None Remove="Events\Messages\RankUpdate.cs.meta" />
+    <None Remove="Events\Messages\RoomMessage.cs.meta" />
+    <None Remove="Events\Messages\RoomPinMessage.cs.meta" />
+    <None Remove="Events\Messages\RoomViewerData.cs.meta" />
+    <None Remove="Events\Messages\Share.cs.meta" />
+    <None Remove="Events\Messages\ShopMessage.cs.meta" />
+    <None Remove="Events\Messages\SubNotify.cs.meta" />
+    <None Remove="Events\Messages\Subscribe.cs.meta" />
+    <None Remove="Events\Messages\UnauthorizedMember.cs.meta" />
+    <None Remove="Events\Objects.meta" />
+    <None Remove="Events\Objects\Badge.cs.meta" />
+    <None Remove="Events\Objects\BarrageData.cs.meta" />
+    <None Remove="Events\Objects\Gift.cs.meta" />
+    <None Remove="Events\Objects\LinkMicArmy.cs.meta" />
+    <None Remove="Events\Objects\LinkMicBattleTeam.cs.meta" />
+    <None Remove="Events\Objects\Picture.cs.meta" />
+    <None Remove="Events\Objects\PollOption.cs.meta" />
+    <None Remove="Events\Objects\TikTokGift.cs.meta" />
+    <None Remove="Events\Objects\TopViewer.cs.meta" />
+    <None Remove="Events\Objects\User.cs.meta" />
+    <None Remove="Events\TikTokEventHandler.cs.meta" />
+    <None Remove="Models.meta" />
+    <None Remove="Models\Protobuf.meta" />
+    <None Remove="Models\Protobuf\AProtoBase.cs.meta" />
+    <None Remove="Models\Protobuf\Data.meta" />
+    <None Remove="Models\Protobuf\Data\GiftData.cs.meta" />
+    <None Remove="Models\Protobuf\Data\IntroMessageData.cs.meta" />
+    <None Remove="Models\Protobuf\Data\LikeData.cs.meta" />
+    <None Remove="Models\Protobuf\Data\MemberMessageData.cs.meta" />
+    <None Remove="Models\Protobuf\Data\SocialMessageData.cs.meta" />
+    <None Remove="Models\Protobuf\EmoteDetails.cs.meta" />
+    <None Remove="Models\Protobuf\EmoteImage.cs.meta" />
+    <None Remove="Models\Protobuf\EventUser.cs.meta" />
+    <None Remove="Models\Protobuf\Headers.meta" />
+    <None Remove="Models\Protobuf\Headers\BaseMessageHeader.cs.meta" />
+    <None Remove="Models\Protobuf\Headers\GiftMessageHeader.cs.meta" />
+    <None Remove="Models\Protobuf\Headers\LikeMessageHeader.cs.meta" />
+    <None Remove="Models\Protobuf\Headers\MemberMessageHeader.cs.meta" />
+    <None Remove="Models\Protobuf\Headers\SocialMessageHeader.cs.meta" />
+    <None Remove="Models\Protobuf\Headers\WebcastRankTextMessageHeader.cs.meta" />
+    <None Remove="Models\Protobuf\LinkMicMethod.cs.meta" />
+    <None Remove="Models\Protobuf\LinkUser.cs.meta" />
+    <None Remove="Models\Protobuf\Message.cs.meta" />
+    <None Remove="Models\Protobuf\Picture.cs.meta" />
+    <None Remove="Models\Protobuf\QuestionDetails.cs.meta" />
+    <None Remove="Models\Protobuf\RankContainer.cs.meta" />
+    <None Remove="Models\Protobuf\Ranking.cs.meta" />
+    <None Remove="Models\Protobuf\RankItem.cs.meta" />
+    <None Remove="Models\Protobuf\RoomMessage.cs.meta" />
+    <None Remove="Models\Protobuf\SystemMessage.cs.meta" />
+    <None Remove="Models\Protobuf\TopViewer.cs.meta" />
+    <None Remove="Models\Protobuf\TreasureBoxData.cs.meta" />
+    <None Remove="Models\Protobuf\TreasureBoxUser.cs.meta" />
+    <None Remove="Models\Protobuf\TreasureBoxUser2.cs.meta" />
+    <None Remove="Models\Protobuf\TreasureBoxUser3.cs.meta" />
+    <None Remove="Models\Protobuf\TreasureBoxUser4.cs.meta" />
+    <None Remove="Models\Protobuf\User.cs.meta" />
+    <None Remove="Models\Protobuf\UserBadge.cs.meta" />
+    <None Remove="Models\Protobuf\UserBadgesAttributes.cs.meta" />
+    <None Remove="Models\Protobuf\UserFollowerData.cs.meta" />
+    <None Remove="Models\Protobuf\UserImageBadge.cs.meta" />
+    <None Remove="Models\Protobuf\UserImageBadgeImage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastBarrageMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastCaptionMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastChatMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastControlMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastEmoteChatMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastEnvelopeMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastGiftBroadcastMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastGiftMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastGiftMessageGiftDetails.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastGiftMessageGiftImage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastGiftMessageGiftReceipt.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastGoalUpdateMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastHourlyRankMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastImDeleteMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastInRoomBannerMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastLikeMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastLinkLayerMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastLinkMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastLinkMicArmies.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastLinkMicArmiesGroup.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastLinkMicArmiesItems.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastLinkMicBattle.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastLinkMicBattleGroup.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastLinkMicBattleItems.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastLinkMicFanTicketMethod.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastLinkMicMethod.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastLiveIntroMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastMemberMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastMessageEvent.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastMessageEventDetails.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastMsgDetectMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastOecLiveShoppingMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastPollMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastQuestionNewMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastRankTextMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastRankUpdateMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastResponse.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastRoomMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastRoomNotifyMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastRoomPinMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastRoomUserSeqMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastSocialMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastSubNotifyMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastUnauthorizedMemberMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastWebsocketAck.cs.meta" />
+    <None Remove="Models\Protobuf\WebcastWebsocketMessage.cs.meta" />
+    <None Remove="Models\Protobuf\WebsocketRouteParam.cs.meta" />
+    <None Remove="Models\TikTokGift.cs.meta" />
+    <None Remove="TikTokLiveSharp.asmdef" />
+    <None Remove="TikTokLiveSharp.asmdef.meta" />
+    <None Include="..\icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="protobuf-net" Version="3.2.26" />
+  </ItemGroup>
+
+</Project>
