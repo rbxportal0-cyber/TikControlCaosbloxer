@@ -37,16 +37,17 @@ sin crear Releases manuales en la web de GitHub.
 
 ---
 
-## ÚNICO paso manual: configurar tu URL
+## Configuración de la URL
 
-En `src/TikControl.App/App.xaml.cs` cambia esta línea por tu repo real:
+La URL ya está configurada en `src/TikControl.App/App.xaml.cs` para este repo:
 
 ```csharp
 string url = System.Environment.GetEnvironmentVariable("TIKCONTROL_UPDATE_URL")
-             ?? "https://raw.githubusercontent.com/sigato/TikControlCaosbloxer/gh-pages/update.json";
+             ?? "https://raw.githubusercontent.com/rbxportal0-cyber/TikControlCaosbloxer/gh-pages/update.json";
 ```
 
-Reemplaza `sigato/TikControlCaosbloxer` por `TU_USUARIO/TU_REPO`.
+Si clonas/forkeas el repo en otra cuenta, cambia `rbxportal0-cyber/TikControlCaosbloxer`
+por tu `USUARIO/REPO`.
 
 También puedes **sobreescribirla en tiempo de ejecución** sin recompilar, con la
 variable de entorno `TIKCONTROL_UPDATE_URL`.

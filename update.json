@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "notes": "Primera versión. Este archivo lo sobrescribe automáticamente el CI/CD en la rama gh-pages.",
-  "url": "https://raw.githubusercontent.com/sigato/TikControlCaosbloxer/gh-pages/TikControlCaosbloxer.exe",
+  "url": "https://raw.githubusercontent.com/rbxportal0-cyber/TikControlCaosbloxer/gh-pages/TikControlCaosbloxer.exe",
   "sha256": "cambia_por_un_hash_real_tras_el_primer_build",
   "date": "2026-01-01T00:00:00Z"
 }

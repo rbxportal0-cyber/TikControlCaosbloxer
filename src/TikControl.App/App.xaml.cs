@@ -25,10 +25,10 @@ public partial class App : Application
     /// </summary>
     private async Task RunAutoUpdateAsync()
     {
-        // URL por defecto (cámbiala por tu repo real):
-        //   https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/gh-pages/update.json
+        // URL por defecto (sobreescribible en tiempo de ejecución con la variable
+        // de entorno TIKCONTROL_UPDATE_URL).
         string url = System.Environment.GetEnvironmentVariable("TIKCONTROL_UPDATE_URL")
-                     ?? "https://raw.githubusercontent.com/sigato/TikControlCaosbloxer/gh-pages/update.json";
+                     ?? "https://raw.githubusercontent.com/rbxportal0-cyber/TikControlCaosbloxer/gh-pages/update.json";
 
         _updater = new UpdaterService(url);
 
