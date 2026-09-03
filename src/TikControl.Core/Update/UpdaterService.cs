@@ -53,7 +53,9 @@ public sealed class UpdaterService : IDisposable
         _http = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
         _http.DefaultRequestHeaders.UserAgent.ParseAdd("TikControlCaosbloxer-AutoUpdater/1.0");
 
-        _exePath = Process.GetCurrentProcess().MainModule?.FileName ?? Assembly.GetEntryAssembly()?.Location ?? "";
+        _exePath = Environment.ProcessPath
+                   ?? Process.GetCurrentProcess().MainModule?.FileName
+                   ?? Path.Combine(AppContext.BaseDirectory, "TikControlCaosbloxer.exe");
         _newExePath = _exePath + ".new";
         _version = version ?? Assembly.GetEntryAssembly()?.GetName().Version?.ToString(3) ?? "1.0.0";
     }
@@ -138,10 +140,9 @@ public sealed class UpdaterService : IDisposable
     }
 
     /// <summary>
-    /// Guarda el nuevo exe como ".new", elimina el actual en marcha (se puede
-    /// borrar/renombrar mientras corre en Windows) y lo sustituye, para luego
-    /// relanzar la app. Se usa un .bat temporal como intermediario para
-    /// garantizar que el reemplazo ocurra cuando el proceso ya ha terminado.
+    /// Guarda el nuevo exe como ".new", programa un .bat temporal que reemplaza
+    /// el actual (cuando el proceso ya ha terminado) y lo relanza, y después
+    /// cierra la app para permitir el reemplazo.
     /// </summary>
     private void ApplyAndRestart(byte[] data)
     {
@@ -156,11 +157,18 @@ public sealed class UpdaterService : IDisposable
         string bat = Path.Combine(exeDir, "_apply_update.bat");
         string batContent =
             "@echo off\r\n" +
-            "timeout /t 3 /nobreak >nul\r\n" +
-            $"del /q \"{_exePath}\"\r\n" +
-            $"move /y \"{_newExePath}\" \"{_exePath}\"\r\n" +
-            $"del /q \"{bat}\"\r\n" +
-            $"start \"\" \"{_exePath}\"\r\n";
+            "setlocal EnableExtensions\r\n" +
+            // Esperar a que la app se cierre por completo antes de tocar el exe
+            "loop:\r\n" +
+            "tasklist /FI \"IMAGENAME eq " + exeName + "\" 2>nul | find /I \"" + exeName + "\" >nul\r\n" +
+            "if not errorlevel 1 (\r\n" +
+            "  timeout /t 1 /nobreak >nul\r\n" +
+            "  goto loop\r\n" +
+            ")\r\n" +
+            "del /q \"" + _exePath + "\" >nul 2>&1\r\n" +
+            "move /y \"" + _newExePath + "\" \"" + _exePath + "\" >nul 2>&1\r\n" +
+            "del /q \"" + bat + "\" >nul 2>&1\r\n" +
+            "start \"\" \"" + _exePath + "\"\r\n";
 
         File.WriteAllText(bat, batContent);
         Log?.Invoke($"Aplicando actualización y reiniciando...");
@@ -172,6 +180,22 @@ public sealed class UpdaterService : IDisposable
             UseShellExecute = true,
             CreateNoWindow = true
         });
+
+        // Cerrar la app para que el .bat pueda borrar y sustituir el exe en marcha.
+        ShutdownApp();
+    }
+
+    /// <summary>
+    /// Cierra el proceso de la aplicación de forma inmediata, dejando que el
+    /// .bat de actualización complete el reemplazo y el relanzamiento.
+    /// El proceso se termina para desbloquear el exe en marcha.
+    /// </summary>
+    private static void ShutdownApp()
+    {
+        // Terminar el proceso para liberar el bloqueo del exe actual.
+        // El .bat ya está programado para esperar a que el proceso acabe y
+        // después sustituir el archivo y relanzar la app con el nuevo diseño.
+        Environment.Exit(0);
     }
 
     /// <summary>Compara dos versiones semver "X.Y.Z" (solo mayoría).</summary>
