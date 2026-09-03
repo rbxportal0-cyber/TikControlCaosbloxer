@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Reflection;
 using System.Text.Json;
 using System.Windows;
 using Microsoft.Web.WebView2.Core;
@@ -22,6 +23,10 @@ public partial class MainWindow : Window
     {
         var webRoot = WebRootPath();
         Directory.CreateDirectory(webRoot);
+
+        // El diseño va embebido en el exe: lo extraemos al disco en cada arranque,
+        // de modo que un exe actualizado trae también el diseño nuevo.
+        ExtractEmbeddedWeb(webRoot);
 
         var env = await CoreWebView2Environment.CreateAsync(null, null, null);
         await Web.EnsureCoreWebView2Async(env);
@@ -47,6 +52,37 @@ public partial class MainWindow : Window
 
     private string WebRootPath()
         => Path.Combine(AppContext.BaseDirectory, "web");
+
+    // Extrae el diseño embebido (TikControl.Web.*) del ensamblado al disco,
+    // sobrescribiendo cualquier versión anterior. Así, cuando llega un exe nuevo
+    // vía auto-update, su diseño embebido se despliega automáticamente.
+    private static void ExtractEmbeddedWeb(string webRoot)
+    {
+        try
+        {
+            var asm = Assembly.GetExecutingAssembly();
+            const string prefix = "TikControl.Web.";
+            foreach (var name in asm.GetManifestResourceNames())
+            {
+                if (!name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) continue;
+
+                // "TikControl.Web.panel.dashboard.html" -> "panel\dashboard.html"
+                var relative = name.Substring(prefix.Length).Replace('/', Path.DirectorySeparatorChar);
+                var dest = Path.Combine(webRoot, relative);
+
+                using var stream = asm.GetManifestResourceStream(name);
+                if (stream is null) continue;
+
+                Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
+                using var file = new FileStream(dest, FileMode.Create, FileAccess.Write, FileShare.Read);
+                stream.CopyTo(file);
+            }
+        }
+        catch
+        {
+            // Si falla la extracción, la app sigue usando la carpeta web existente.
+        }
+    }
 
     // JS -> C#: comandos desde el panel
     private void OnWebMessage(object sender, CoreWebView2WebMessageReceivedEventArgs e)

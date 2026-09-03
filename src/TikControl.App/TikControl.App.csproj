@@ -5,9 +5,12 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4191.47" />
   </ItemGroup>
-  <!-- Interfaz web: se copia a build/out bajo "web/" y WebView2 la sirve por VirtualHost -->
+  <!-- Interfaz web: se copia a build/out bajo "web/" y WebView2 la sirve por VirtualHost.
+       También se EMBEBE como recurso para que el exe sea autocontenido: al arrancar,
+       la app extrae el diseño al disco, de modo que actualizar el exe actualiza el diseño. -->
   <ItemGroup>
     <Content Include="..\TikControl.Web\**\*" Link="web\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <EmbeddedResource Include="..\TikControl.Web\**\*" Link="web\%(RecursiveDir)%(Filename)%(Extension)" LogicalName="TikControl.Web.%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
