@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TikControl Caosbloxer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo"></span>
+      <span class="brand-name">TikControl <b>Caosbloxer</b></span>
+    </div>
+    <div class="live-status" id="liveStatus"><i class="dot"></i> Modo DEMO</div>
+    <div class="connect-box">
+      <input type="text" id="usernameInput" placeholder="@tu_usuario" spellcheck="false" />
+      <button id="btnConnect" class="btn-primary">Conectar</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="stats">
+      <div class="stat">
+        <span class="stat-label">Diamantes</span>
+        <span class="stat-value" id="statDiamonds">0</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Seguidores</span>
+        <span class="stat-value" id="statFollowers">0</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Comentarios</span>
+        <span class="stat-value" id="statComments">0</span>
+      </div>
+    </section>
+
+    <section class="feed">
+      <h2>Últimos eventos</h2>
+      <ul id="eventList" class="event-list"></ul>
+    </section>
+  </main>
+
+  <aside class="controls">
+    <h3>Controles</h3>
+    <label class="switch-line">
+      <span>Overlay en pantalla</span>
+      <input type="checkbox" id="overlayToggle" checked />
+    </label>
+    <label class="switch-line">
+      <span>Sonido de alertas</span>
+      <input type="checkbox" id="soundToggle" checked />
+    </label>
+    <button id="btnClear">Limpiar lista</button>
+  </aside>
+
+  <script src="app.js"></script>
+</body>
+</html>

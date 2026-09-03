@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CAOSBLOXER AGENCIA — Dashboard</title>
+
+<!-- Tailwind via CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          base: '#0B0712',
+          panel: '#16101F',
+          panel2: '#1C1526',
+          borderdark: '#2A2138',
+          accent: '#00C2FF',
+          fuchsia: '#FF2E97',
+          gold: '#FFB800',
+          green: '#00E881',
+          purple: '#7C5CFF',
+        },
+        fontFamily: {
+          sans: ['Inter', 'Roboto', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        },
+      },
+    },
+  };
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #0B0712;
+    --panel: #16101F;
+    --panel2: #1C1526;
+    --border: #2A2138;
+    --accent: #00C2FF;
+    --fuchsia: #FF2E97;
+    --green: #00E881;
+    --purple: #7C5CFF;
+    --text: #F5F2FA;
+    --muted: #9C93AE;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background:
+      radial-gradient(1100px 450px at 12% -8%, rgba(124,92,255,0.18), transparent 60%),
+      radial-gradient(900px 500px at 88% 0%, rgba(255,46,151,0.16), transparent 60%),
+      var(--bg);
+    color: var(--text);
+    font-family: 'Inter', 'Roboto', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::-webkit-scrollbar { width: 9px; height: 9px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #3a2f52; border-radius: 999px; }
+  ::-webkit-scrollbar-thumb:hover { background: #4a3b63; }
+
+  .card {
+    background: linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+  }
+  .card-hover { transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+  .card-hover:hover {
+    transform: translateY(-3px);
+    border-color: #4a3b63;
+    box-shadow: 0 12px 34px -14px rgba(0,0,0,.75);
+  }
+
+  .nav-link {
+    position: relative;
+    color: var(--muted);
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: color .15s ease, background .15s ease;
+    white-space: nowrap;
+  }
+  .nav-link:hover { color: #fff; background: rgba(255,255,255,.04); }
+  .nav-link.active { color: var(--fuchsia); }
+  .nav-link.active::after {
+    content: '';
+    position: absolute;
+    left: 12px; right: 12px; bottom: 2px;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--fuchsia);
+    box-shadow: 0 0 8px var(--fuchsia);
+  }
+
+  /* Contador rosa neón brillante */
+  .neon-counter {
+    color: var(--fuchsia);
+    text-shadow: 0 0 18px rgba(255,46,151,.75), 0 0 34px rgba(255,46,151,.35);
+    font-weight: 900;
+  }
+
+  /* Gradiente del logo */
+  .logo-grad {
+    background: linear-gradient(90deg, #FF2E97, #7C5CFF, #00C2FF);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 12px rgba(255,46,151,.4));
+  }
+
+  .quick-btn {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+    aspect-ratio: 1/1;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-top-width: 3px;
+    border-radius: 14px;
+    font-size: 12px; font-weight: 600;
+    color: var(--text);
+    transition: transform .18s ease, background .18s ease;
+  }
+  .quick-btn:hover { transform: translateY(-3px); background: var(--panel2); }
+  .quick-btn svg { width: 28px; height: 28px; }
+
+  /* Tarjeta vertical de creador */
+  .creator-card {
+    position: relative;
+    background: linear-gradient(180deg, #1d1730 0%, #13101f 100%);
+    border: 1px solid rgba(124,92,255,.4);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .creator-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 26px -6px rgba(124,92,255,.55);
+  }
+  .creator-card::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 4px;
+    background: linear-gradient(90deg, #FF2E97, #7C5CFF);
+  }
+
+  .live-dot {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(255,46,151,.16);
+    color: #ff7cc0;
+    font-size: 11px; font-weight: 800;
+    padding: 3px 9px; border-radius: 999px;
+    border: 1px solid rgba(255,46,151,.4);
+    letter-spacing: .04em;
+  }
+  .live-dot .pulse {
+    width: 7px; height: 7px; border-radius: 999px;
+    background: #ff2e97;
+    animation: pulse 1.3s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(255,46,151,.6); }
+    50%      { box-shadow: 0 0 0 6px rgba(255,46,151,0); }
+  }
+
+  /* Etiqueta TEAM CAOSBLOXER */
+  .team-tag {
+    background: linear-gradient(90deg, #7C5CFF, #FF2E97);
+    color: #fff;
+    font-weight: 900;
+    letter-spacing: .1em;
+  }
+
+  /* Banner morado de la agencia */
+  .agency-banner {
+    position: relative;
+    background:
+      radial-gradient(560px 300px at 20% 0%, rgba(124,92,255,.30), transparent 60%),
+      radial-gradient(420px 320px at 90% 30%, rgba(255,46,151,.26), transparent 60%),
+      linear-gradient(160deg, #221a3d 0%, #161024 55%, #0d0a17 100%);
+    border: 1px solid rgba(124,92,255,.5);
+    border-radius: 18px;
+    overflow: hidden;
+  }
+  .agency-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 4px;
+    background: linear-gradient(90deg, #FF2E97, #7C5CFF, #00C2FF);
+  }
+  .agency-banner .star {
+    position: absolute;
+    border-radius: 999px;
+    background: #fff;
+    opacity: .5;
+    animation: twinkle 3s infinite;
+  }
+  @keyframes twinkle {
+    0%,100% { opacity: .2; transform: scale(.8); }
+    50%      { opacity: .9; transform: scale(1.15); }
+  }
+
+  .progress {
+    height: 8px;
+    border-radius: 999px;
+    background: #241b33;
+    overflow: hidden;
+  }
+  .progress > span {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+  }
+
+  .timeline-item { position: relative; padding-left: 24px; }
+  .timeline-item::before {
+    content: '';
+    position: absolute; left: 6px; top: 6px;
+    width: 10px; height: 10px; border-radius: 999px;
+    background: var(--fuchsia);
+    box-shadow: 0 0 8px var(--fuchsia);
+  }
+  .timeline-item:not(:last-child)::after {
+    content: '';
+    position: absolute; left: 10px; top: 20px; bottom: -8px;
+    width: 2px; background: var(--border);
+  }
+</style>
+</head>
+
+<body class="min-h-screen antialiased">
+
+  <!-- ============ NAVBAR ============ -->
+  <header class="sticky top-0 z-50 border-b border-borderdark/80 bg-base/80 backdrop-blur-md">
+    <div class="mx-auto flex max-w-[1400px] items-center justify-between gap-4 px-4 py-3">
+
+      <!-- Logo CAOSBLOXER AGENCIA -->
+      <div class="flex items-center gap-2">
+        <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-fuchsia to-purple shadow-[0_0_16px_-2px_#FF2E97]">
+          <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        </div>
+        <span class="text-lg font-black uppercase tracking-tight logo-grad">Caosbloxer Agencia</span>
+      </div>
+
+      <!-- Menú central -->
+      <nav class="hidden items-center gap-1 lg:flex">
+        <a href="#" class="nav-link active">Inicio</a>
+        <a href="#" class="nav-link">Alertas</a>
+        <a href="#" class="nav-link">Overlays</a>
+        <a href="#" class="nav-link">Comunidad</a>
+        <a href="#" class="nav-link">Batallas</a>
+        <a href="#" class="nav-link">Gaming</a>
+        <a href="#" class="nav-link">Agencias</a>
+        <a href="#" class="nav-link">Ajustes</a>
+      </nav>
+
+      <!-- Derecha -->
+      <div class="flex items-center gap-3">
+        <!-- Botón conectar verde aqua/neón -->
+        <button class="flex items-center gap-2 rounded-full bg-green px-5 py-2.5 text-sm font-extrabold tracking-wide text-black shadow-[0_0_24px_-4px_#00E881] transition hover:brightness-110" id="btnConectar">
+          <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a7 7 0 017 7c0 2.4-1.7 4-4 5v2a3 3 0 01-6 0v-2c-2.3-1-4-2.6-4-5a7 7 0 017-7zm0 2a5 5 0 00-5 5c0 1.9 1.3 3.1 3 4.1V16a2 2 0 004 0v-2.9c1.7-1 3-2.2 3-4.1a5 5 0 00-5-5z"/></svg>
+          CONECTAR TIKTOK LIVE
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ CUERPO (2 columnas) ============ -->
+  <main class="mx-auto grid max-w-[1400px] grid-cols-1 gap-6 px-4 py-6 lg:grid-cols-[70%_30%]">
+
+    <!-- ======== COLUMNA IZQUIERDA ======== -->
+    <section class="flex min-w-0 flex-col gap-6">
+
+      <!-- Banner de bienvenida -->
+      <div class="card relative overflow-hidden p-6 card-hover">
+        <div class="absolute inset-0 bg-gradient-to-r from-purple/15 via-transparent to-fuchsia/10"></div>
+        <div class="relative flex items-center gap-5">
+          <img src="https://i.pravatar.cc/128?img=11" alt="Avatar" class="h-20 w-20 rounded-full border-4 border-purple object-cover shadow-[0_0_25px_-5px_#7C5CFF]" />
+          <div>
+            <h1 class="text-2xl font-extrabold leading-tight">¡Bienvenido/a a <span class="logo-grad">CAOSBLOXER AGENCIA</span>, <span class="neon-counter" id="welcomeUser">@caosboxer</span>!</h1>
+            <p class="mt-1 text-sm text-muted">Tu próximo LIVE puede ser el mejor.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estadísticas centrales: contadores grandes en rosa fucsia neón -->
+      <div>
+        <div class="mb-3 flex items-center justify-between">
+          <h2 class="text-lg font-bold">Estadísticas en vivo</h2>
+          <span class="rounded-full bg-fuchsia/15 px-3 py-1 text-[11px] font-bold text-fuchsia">ACTUALIZADO EN DIRECTO</span>
+        </div>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div class="card p-6 text-center card-hover">
+            <div class="text-4xl font-black neon-counter leading-none"><span class="counter" data-target="1284500">0</span></div>
+            <div class="mt-2 text-xs font-bold uppercase tracking-widest text-muted">Diamantes totales</div>
+          </div>
+          <div class="card p-6 text-center card-hover">
+            <div class="text-4xl font-black neon-counter leading-none"><span class="counter" data-target="84210">0</span></div>
+            <div class="mt-2 text-xs font-bold uppercase tracking-widest text-muted">Regalos recibidos</div>
+          </div>
+          <div class="card p-6 text-center card-hover">
+            <div class="text-4xl font-black neon-counter leading-none"><span class="counter" data-target="3120">0</span></div>
+            <div class="mt-2 text-xs font-bold uppercase tracking-widest text-muted">Donadores</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top apoyos en LIVE / Batallas -->
+      <div class="card p-6">
+        <div class="mb-4 flex items-center justify-between">
+          <h2 class="text-lg font-bold">Top Apoyos en LIVE / Batallas</h2>
+          <span class="rounded-full bg-fuchsia/15 px-3 py-1 text-xs font-bold text-fuchsia">En directo</span>
+        </div>
+        <div class="flex gap-6 overflow-x-auto pb-2" id="topSupporters">
+          <!-- Se rellena con JS -->
+        </div>
+      </div>
+
+      <!-- Creadores en vivo ahora (tarjetas verticales + etiqueta TEAM CAOSBLOXER) -->
+      <div>
+        <div class="mb-3 flex items-center justify-between">
+          <h2 class="text-lg font-bold">Creadores en vivo ahora</h2>
+          <a href="#" class="text-xs font-semibold text-fuchsia hover:underline">Ver todos</a>
+        </div>
+        <div class="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4" id="liveCreators">
+          <!-- Se rellena con JS -->
+        </div>
+      </div>
+
+      <!-- Novedades y actualizaciones (Changelog) -->
+      <div class="card p-6">
+        <h2 class="mb-4 text-lg font-bold">Novedades de la agencia</h2>
+        <div class="space-y-5" id="changelog">
+          <!-- Se rellena con JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== COLUMNA DERECHA ======== -->
+    <aside class="flex flex-col gap-6">
+
+      <!-- Banner exclusivo morado CAOSBLOXER AGENCIA -->
+      <div class="agency-banner p-6 card-hover" id="agencyBanner">
+        <div class="relative text-center">
+          <span class="inline-flex items-center gap-1.5 rounded-full border border-purple/60 bg-purple/15 px-3 py-1 text-[11px] font-black uppercase tracking-widest text-white">
+            <svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.9 6.26L21.5 9.3l-4.7 4.6 1.1 6.6L12 17.3l-5.9 3.2 1.1-6.6L2.5 9.3l6.6-1.04L12 2z"/></svg>
+            CAOSBLOXER AGENCIA
+          </span>
+
+          <h2 class="mt-4 text-3xl font-black leading-none">
+            <span class="bg-gradient-to-r from-amber-200 via-white to-purple bg-clip-text text-transparent">CRECE EN VIVO</span>
+          </h2>
+          <p class="mt-1 text-sm font-semibold text-white/80">Únete a la agencia nº1 de creadores</p>
+
+          <div class="mt-6 grid grid-cols-2 gap-3">
+            <button class="rounded-full bg-gradient-to-r from-purple to-fuchsia py-2.5 text-xs font-extrabold uppercase tracking-wide text-white shadow-[0_0_18px_-4px_#7C5CFF] transition hover:brightness-110" id="btnInvitar">INVITAR A UN AMIGO</button>
+            <button class="rounded-full border border-purple/60 bg-purple/10 py-2.5 text-xs font-extrabold uppercase tracking-wide text-white transition hover:bg-purple/20" id="btnSoporte">SOPORTE 24/7</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accesos rápidos -->
+      <div class="card p-6">
+        <h2 class="mb-4 text-lg font-bold">Accesos rápidos</h2>
+        <div class="grid grid-cols-3 gap-3" id="quickAccess">
+          <!-- Se rellena con JS -->
+        </div>
+      </div>
+
+      <!-- Recordatorios -->
+      <div class="card p-6">
+        <h2 class="mb-4 text-lg font-bold">Recordatorios</h2>
+        <div class="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-borderdark bg-panel px-4 py-8 text-center">
+          <svg class="h-10 w-10 text-muted/50" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2c0 .5-.2 1-.6 1.4L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+          <p class="text-sm text-muted">No hay recordatorios pendientes</p>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- ============ JAVASCRIPT ============ -->
+  <script>
+    const CONFIG = { user: '@caosboxer', agency: 'CAOSBLOXER AGENCIA' };
+
+    const topSupporters = [
+      { name: 'User1', pct: 47, color: '#FF2E97', glow: true },
+      { name: 'User2', pct: 40, color: '#7C5CFF' },
+      { name: 'User3', pct: 31, color: '#FF2E97' },
+      { name: 'User4', pct: 24, color: '#7C5CFF' },
+      { name: 'User5', pct: 18, color: '#00C2FF' },
+    ];
+
+    const liveCreators = [
+      { name: 'LunaDx', tag: 'Streamer' },
+      { name: 'NovaLive', tag: 'Gamer' },
+      { name: 'CaosGamer', tag: 'Creativo' },
+      { name: 'Zelnick', tag: 'Música' },
+      { name: 'TikQueen', tag: 'Live' },
+      { name: 'MissLivid', tag: 'IRL' },
+      { name: 'StreamPro', tag: 'Gamer' },
+      { name: 'RobloxQueen', tag: 'Gaming' },
+    ];
+
+    const changelog = [
+      { date: '3 de septiembre', title: 'Nuevo rediseño CAOSBLOXER AGENCIA', tags: ['Diseño', 'UI'] },
+      { date: '2 de septiembre', title: 'Mortor de actualización 100% automática', tags: ['Motor'] },
+      { date: '1 de septiembre', title: 'Banner exclusivo de la agencia', tags: ['Agencia'] },
+      { date: '31 de agosto', title: 'Más rápido y estable en directos largos', tags: ['Rendimiento'] },
+    ];
+
+    const quickAccess = [
+      { label: 'Comunidad', color: '#7C5CFF', icon: 'M17 20h5v-2a3 3 0 00-5.4-1.6M17 20H7m10 0v-2a5 5 0 00-3-4.6M7 20H2v-2a3 3 0 015.4-1.6M7 20v-2a5 5 0 013-4.6M9 10a3 3 0 100-6 3 3 0 000 6zm6 0a3 3 0 100-6 3 3 0 000 6z' },
+      { label: 'Crear Alerta', color: '#FF2E97', icon: 'M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z' },
+      { label: 'Galería de overlays', color: '#00C2FF', icon: 'M4 16l4.58-4.58a2 2 0 012.83 0L16 16m-2-2l1.58-1.58a2 2 0 012.83 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z' },
+      { label: 'Editor de Overlay', color: '#00E881', icon: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.4-9.4a2.1 2.1 0 113 3L11 15l-4 1 1-4 9.6-9.4z' },
+      { label: 'Batallas', color: '#FF7849', icon: 'M7 11l2.5 1 2-4 2.5 1 2-4 1.5 1M5 21l1-9m12 6l-1-12m-2 9h4m-7 6V11m-2 2h7' },
+      { label: 'Gaming', color: '#FF45C8', icon: 'M6 12h8m-8 0a4 4 0 11-4 4v-4a8 8 0 018-8h4a4 4 0 014 4v0a4 4 0 014 4v4m-4-4h.01M17 16h.01M7 16h.01' },
+      { label: 'Importar config TikFinity', color: '#7C5CFF', download: true, icon: 'M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 11V3m-3 3l3-3 3 3M8 11h8' },
+    ];
+
+    function renderSupporters() {
+      const wrap = document.getElementById('topSupporters');
+      wrap.innerHTML = topSupporters.map(u => `
+        <div class="flex min-w-[160px] flex-1 flex-col justify-between gap-3 rounded-xl border border-borderdark bg-panel p-4">
+          <div class="flex items-center justify-center gap-2">
+            <div class="flex h-10 w-10 items-center justify-center rounded-full font-extrabold"
+                 style="background:${u.color}22;color:${u.color};${u.glow ? 'box-shadow:0 0 14px -2px '+u.color : ''}">
+              ${u.name[0]}
+            </div>
+            <div>
+              <div class="text-sm font-bold text-white">${u.name}</div>
+              <div class="text-xs font-semibold" style="color:${u.color}">${u.pct}%</div>
+            </div>
+          </div>
+          <div class="progress">
+            <span style="width:${u.pct}%;background:${u.color};${u.glow ? 'box-shadow:0 0 8px '+u.color : ''}"></span>
+          </div>
+        </div>`).join('');
+    }
+
+    /* Tarjetas verticales de creador + etiqueta morada TEAM CAOSBLOXER */
+    function renderCreators() {
+      const wrap = document.getElementById('liveCreators');
+      wrap.innerHTML = liveCreators.map(c => `
+        <div class="creator-card p-4 text-center">
+          <div class="flex items-center justify-between">
+            <span class="live-dot"><span class="pulse"></span>LIVE</span>
+            <button class="text-muted transition hover:text-white">
+              <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </button>
+          </div>
+          <img src="https://i.pravatar.cc/120?img=${Math.random()*70|0}" alt="${c.name}" class="mx-auto mt-3 h-16 w-16 rounded-full border-2 border-purple object-cover" />
+          <div class="mt-3">
+            <div class="text-sm font-bold text-white">${c.name}</div>
+            <div class="text-[11px] text-purple">${c.tag}</div>
+          </div>
+          <span class="team-tag mt-3 inline-block rounded-full px-3 py-1 text-[9px] uppercase">TEAM CAOSBLOXER</span>
+        </div>`).join('');
+    }
+
+    function renderChangelog() {
+      const wrap = document.getElementById('changelog');
+      wrap.innerHTML = changelog.map(item => `
+        <div class="timeline-item">
+          <div class="text-xs font-bold text-fuchsia">${item.date}</div>
+          <div class="mt-1 text-sm font-semibold text-white">${item.title}</div>
+          <div class="mt-1.5 flex gap-2">
+            ${item.tags.map(t => `<span class="rounded-full bg-white/5 border border-borderdark px-2 py-0.5 text-[10px] font-semibold text-muted">${t}</span>`).join('')}
+          </div>
+        </div>`).join('');
+    }
+
+    function renderQuick() {
+      const wrap = document.getElementById('quickAccess');
+      wrap.innerHTML = quickAccess.map(b => `
+        <button class="quick-btn" style="border-top-color:${b.color}" title="${b.label}">
+          <svg fill="none" stroke="currentColor" stroke-width="2" style="color:${b.color}" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="${b.icon}"/></svg>
+          <span class="px-1 text-center leading-tight">${b.label}</span>
+        </button>`).join('');
+    }
+
+    /* Estrellas decorativas del banner de la agencia */
+    function stars() {
+      const banner = document.getElementById('agencyBanner');
+      const box = banner.querySelector('.relative');
+      for (let i = 0; i < 14; i++) {
+        const s = document.createElement('span');
+        const size = 1 + Math.random() * 2;
+        s.className = 'star';
+        s.style.width = s.style.height = size + 'px';
+        s.style.left = Math.random() * 100 + '%';
+        s.style.top = Math.random() * 100 + '%';
+        s.style.animationDelay = (Math.random() * 3) + 's';
+        box.appendChild(s);
+      }
+    }
+
+    function animateCounters() {
+      document.querySelectorAll('.counter').forEach(el => {
+        const target = Number(el.dataset.target);
+        const dur = 1200, start = performance.now();
+        function tick(now) {
+          const p = Math.min((now - start) / dur, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.floor(eased * target).toLocaleString('es');
+          if (p < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      });
+    }
+
+    const btn = document.getElementById('btnConectar');
+    let connected = false;
+    btn.addEventListener('click', () => {
+      connected = !connected;
+      btn.classList.toggle('bg-green', !connected);
+      btn.classList.toggle('bg-fuchsia', connected);
+      btn.innerHTML = connected
+        ? '<svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> DESCONECTAR'
+        : '<svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a7 7 0 017 7c0 2.4-1.7 4-4 5v2a3 3 0 01-6 0v-2c-2.3-1-4-2.6-4-5a7 7 0 017-7zm0 2a5 5 0 00-5 5c0 1.9 1.3 3.1 3 4.1V16a2 2 0 004 0v-2.9c1.7-1 3-2.2 3-4.1a5 5 0 00-5-5z"/></svg> CONECTAR';
+    });
+
+    document.getElementById('btnInvitar').addEventListener('click', () => {
+      alert('Comparte tu código de invitación de CAOSBLOXER AGENCIA con un amigo \uD83C\uDF1F');
+    });
+    document.getElementById('btnSoporte').addEventListener('click', () => {
+      alert('Nuestro equipo de SOPORTE 24/7 te atenderá en breve. \u2705');
+    });
+
+    document.getElementById('welcomeUser').textContent = CONFIG.user;
+
+    renderSupporters();
+    renderCreators();
+    renderChangelog();
+    renderQuick();
+    stars();
+    animateCounters();
+  </script>
+</body>
+</html>
